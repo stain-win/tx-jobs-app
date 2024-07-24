@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {AuthService} from '@tx/core';
 
 export enum LoginMode {
     LOGIN = 'login',
@@ -16,10 +17,18 @@ export enum LoginMode {
 export class LoginComponent implements OnInit{
     @Input() mode = LoginMode.LOGIN;
 
-    constructor() {
+    constructor(protected authService$: AuthService) {
     }
 
     ngOnInit() {
+        // this.authService$.login(
+        //     {
+        //         email: 'test',
+        //         password: 'test',
+        //     }).subscribe();
+    }
+
+    onSubmit() {
 
     }
 

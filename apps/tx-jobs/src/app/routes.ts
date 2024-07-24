@@ -1,21 +1,34 @@
 import {Routes} from '@angular/router';
-import {CORE_ROUTES_CONFIG} from '@tx/core';
+import {authGuard, CORE_ROUTES_CONFIG} from '@tx/core';
+import {LayoutComponent} from '../modules/layout/layout.component';
 
 export const APP_ROUTES: Routes = [
     {
         path: '',
-        pathMatch: 'full',
-        redirectTo: 'home',
+        component: LayoutComponent,
+        children: [
+            {
+                path: '',
+                loadChildren: async () => ( await import('../modules/home/home.routes')).homeRoutes,
+            },
+            {
+                path: 'login',
+                loadComponent: async () => (await import('../modules/login/login.component'))
+                    .LoginComponent,
+            },
+            {
+                path: 'register',
+                loadComponent: async () => (await import('../modules/login/login.component'))
+                    .LoginComponent,
+            },
+            {
+                path: 'dashboard',
+                canActivate: [authGuard],
+                loadChildren: async () => (await import('../modules/client-dashboard/client-dashboard.routes'))
+                    .dashboardRoutes,
+            },
+        ],
     },
-    {
-        path: 'home',
-        loadChildren: () => import('../modules/home/home.routes').then(m => m.homeRoutes),
-    },
-    {
-        path: 'dashboard',
-        canActivate: [],
-        loadChildren: () => import('../modules/client-dashboard/client-dashboard.routes')
-            .then(m => m.dashboardRoutes),
-    },
+
     ...CORE_ROUTES_CONFIG,
 ];
