@@ -29,6 +29,5 @@ export const APP_ROUTES: Routes = [
             },
         ],
     },
-
     ...CORE_ROUTES_CONFIG,
 ];

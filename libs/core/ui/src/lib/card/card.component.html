@@ -1,0 +1,12 @@
+<div class="card w-full my-5 bg-gray-900 hover:bg-gray-800">
+    <div class="card-body">
+        <h2 class="card-title">{{ title }}</h2>
+        <p>{{description}}</p>
+        @if (footerTemplate) {
+            <ng-container *ngTemplateOutlet="footerTemplate"></ng-container>
+        }
+        <div class="card-actions justify-end">
+            <a [routerLink]="actionLink"  class="btn btn-primary">{{ actionText }}</a>
+        </div>
+    </div>
+</div>

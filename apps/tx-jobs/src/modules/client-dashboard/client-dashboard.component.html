@@ -80,18 +80,25 @@
                 </button>
             </div>
         </div>
-        <div class="flex-grow p-6 overflow-auto bg-gray-500">
-            <div class="grid grid-cols-3 gap-6">
-                <router-outlet></router-outlet>
-                <div class="h-24 col-span-2 bg-white border border-gray-300"></div>
-                <div class="h-24 col-span-2 bg-white border border-gray-300"></div>
-                <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
-                <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
-                <div class="h-24 col-span-2 bg-white border border-gray-300"></div>
-                <div class="h-24 col-span-3 bg-white border border-gray-300"></div>
-                <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
-                <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
-                <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
+        <div class="relative">
+            <aside class="absolute bg-gray-800 h-full sm:flex hidden ">
+                <div class="flex-shrink-0 h-16 px-8 border-t border-gray-900">
+                    <p class="text-sm text-gray-500">© 2021 TX Jobs. All rights reserved.</p>
+                </div>
+            </aside>
+            <div class="flex-grow p-6 overflow-auto bg-gray-500 ml-0 sm:ml-72">
+                <div class="grid grid-cols-3 gap-6">
+                    <router-outlet></router-outlet>
+                    <div class="h-24 col-span-2 bg-white border border-gray-300"></div>
+                    <div class="h-24 col-span-2 bg-white border border-gray-300"></div>
+                    <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
+                    <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
+                    <div class="h-24 col-span-2 bg-white border border-gray-300"></div>
+                    <div class="h-24 col-span-3 bg-white border border-gray-300"></div>
+                    <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
+                    <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
+                    <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
+                </div>
             </div>
         </div>
     </div>
