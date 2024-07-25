@@ -16,7 +16,8 @@
         "baseUrl": ".",
         "paths": {
             "@tx/core": ["libs/core/src/index.ts"],
-            "@tx/core/environment": ["libs/core/environment/src/index.ts"]
+            "@tx/core/environment": ["libs/core/environment/src/index.ts"],
+            "@tx/core/ui": ["libs/core/ui/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

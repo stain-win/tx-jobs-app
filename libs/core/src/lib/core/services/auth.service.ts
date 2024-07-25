@@ -3,7 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {User, UserLogin, UserResponse} from '../models';
 import {ApiUrlService} from './api-url.service';
 import {environment} from '@tx/core/environment';
-import {BehaviorSubject, catchError, Observable, of, tap} from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, tap, throwError } from 'rxjs';
+import { error } from 'ng-packagr/lib/utils/log';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +20,7 @@ export class AuthService {
             apiBaseUrl: this._baseUrl,
             apiPath: environment.auth?.apiPath ?? '',
             apiVersion: environment.auth?.apiVersion ?? ''}), {user: credentials}).pipe(
-                catchError(() => of(null)),
+                catchError((error) => {throw error}),
                 tap((res: UserResponse | null) => {
                     if(!res?.user) return;
                     this.currentUser$.next(res.user as User);

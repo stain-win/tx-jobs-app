@@ -1,0 +1,13 @@
+{
+    "/jobs": {
+        "target": "http://localhost:3000",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    },
+    "/invoices/*": {
+        "target": "http://localhost:3000",
+        "secure": false,
+        "changeOrigin": true
+    }
+}

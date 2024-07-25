@@ -6,3 +6,12 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+@layer
+home {
+    .header-bg {
+        background: url('../public/abstract-bg.svg') no-repeat center right;
+        @apply bg-80;
+    }
+}

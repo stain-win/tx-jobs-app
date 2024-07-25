@@ -1,0 +1,29 @@
+<section class="px-20 mx-auto lg:w-3/4 md:w-full md:px-2 sm:max-w-full sm:px-2">
+    @if (jobAds$ | async; as jobAds) {
+        @for (jobAd of jobAds; track jobAd.id) {
+
+            <a [routerLink]="['/job', jobAd.id]">
+                <txc-card
+                    [title]="jobAd.title"
+                    [description]="jobAd.description"
+                    [actionText]="'Apply now'"
+                    [actionLink]="['/job', jobAd.id]"
+                    [footerTemplate]="footerTemplate"
+                >
+                    <ng-template #footerTemplate>
+                        <div class="flex-row">
+                            @for (skills of jobAd.skills; track skills) {
+                                <span class="badge badge-neutral mr-2 last:mr-0">{{ skills }}</span>
+                            }
+                        </div>
+                    </ng-template>
+                    <button class="btn btn-primary">Apply now</button>
+                </txc-card>
+            </a>
+        }
+    }
+    @if (jobAdsIsLoading$ | async) {
+        <div class="card bg-neutral w-full my-10 shadow-xl">
+        </div>
+    }
+</section>

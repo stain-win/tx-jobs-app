@@ -1,1 +1,19 @@
-<p>job-ad works!</p>
+<div class="w-full px-4 py-10 bg-auto">
+    @if (jobAdVm$ | async; as jobAdVm) {
+
+        <h1 class="text-4xl font-bold">{{ jobAdVm.jobAd.title }}</h1>
+        <div class="divider"></div>
+        <h2 class="text-2xl">About the job:</h2>
+        <div class="text-wrap indent-2 px-4 mt-8">{{ jobAdVm.jobAd.description }}</div>
+        <div class="divider"></div>
+        <div>
+            <h2>Skills required:</h2>
+            @for (skill of jobAdVm.jobAd.skills; track skill) {
+                <div class="badge badge-lg badge-neutral mx-2 p-4 mt-2">{{ skill }}</div>
+            }
+        </div>
+    }
+    @if (jobAdIsLoading$ | async) {
+        <div class="loading loading-bars mx-auto w-20 block"></div>
+    }
+</div>

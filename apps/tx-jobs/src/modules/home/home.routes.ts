@@ -7,6 +7,12 @@ export const homeRoutes: Routes = [
         component: HomeComponent,
         children: [
             {
+                path: '',
+                pathMatch: 'full',
+                loadComponent: async  () => (await import('../../components/job-ad-list/job-ad-list.component'))
+                    .JobAdListComponent
+            },
+            {
                 path: 'job/:id',
                 loadComponent: () => import('../../components/job-ad/job-ad.component')
                     .then(m => m.JobAdComponent),

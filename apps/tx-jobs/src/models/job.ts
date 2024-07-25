@@ -1,5 +1,5 @@
 export interface JobAd {
-    id: number;
+    id: string;
     /**
      * Title of a job ad. Required property.
      * It's not allowed to have two job ads with the same title.
@@ -24,7 +24,7 @@ export interface JobAd {
 
 export type JobAdStatus = 'draft' | 'published' | 'archived';
 
-interface JobAdDto extends JobAd {
+export interface JobAdDto extends JobAd {
     // DTO properties that are not part of the model
     createdAt: Date;
     updatedAt: Date;
