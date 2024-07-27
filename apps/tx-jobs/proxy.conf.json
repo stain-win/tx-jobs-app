@@ -5,9 +5,10 @@
         "changeOrigin": true,
         "logLevel": "debug"
     },
-    "/invoices/*": {
+    "/invoices": {
         "target": "http://localhost:3000",
         "secure": false,
-        "changeOrigin": true
+        "changeOrigin": true,
+        "logLevel": "debug"
     }
 }

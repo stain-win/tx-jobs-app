@@ -70,6 +70,11 @@ export class ObjectUtil {
 
     }
 
+    static objectToMap<T extends { [key: string]: unknown}> (object: T): Map<string, unknown> {
+            return new Map(Object.entries(object));
+
+    }
+
 }
 
 // tslint:disable-next-line:no-namespace

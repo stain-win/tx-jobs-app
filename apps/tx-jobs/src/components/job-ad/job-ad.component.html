@@ -1,6 +1,5 @@
 <div class="w-full px-4 py-10 bg-auto">
     @if (jobAdVm$ | async; as jobAdVm) {
-
         <h1 class="text-4xl font-bold">{{ jobAdVm.jobAd.title }}</h1>
         <div class="divider"></div>
         <h2 class="text-2xl">About the job:</h2>
@@ -12,8 +11,33 @@
                 <div class="badge badge-lg badge-neutral mx-2 p-4 mt-2">{{ skill }}</div>
             }
         </div>
+
+        @if (context === APPLICATION_CONTEXT.AUTHORIZED) {
+            <div class="grid grid-cols-3 gap-6">
+                @for (invoice of jobAdVm.jobAd.invoices; track invoice) {
+                    <txc-card
+                        [title]="'Invoice'"
+                        [description]="'Job Ad invoice'"
+                        [footerTemplate]="footerTemplate"
+                        [footerData]="invoice"
+                        [showActionFooter]="false"
+                    ></txc-card>
+                }
+            </div>
+        }
     }
     @if (jobAdIsLoading$ | async) {
         <div class="loading loading-bars mx-auto w-20 block"></div>
     }
 </div>
+<ng-template #footerTemplate let-invoice>
+    <div class="divider"></div>
+    <div class="pt-2 flex flex-col space-y-6">
+        <div class="flex flex-row justify-between">
+            Amount: <span class="font-bold">{{ invoice.amount }}</span>
+        </div>
+        <div class="flex flex-row justify-between">
+            Due date: <span class="font-bold">{{ invoice.dueDate | date }}</span>
+        </div>
+    </div>
+</ng-template>

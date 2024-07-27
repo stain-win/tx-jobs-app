@@ -1,1 +1,35 @@
-<p>invoice works!</p>
+<div class="w-full flex">
+    <div class="flex flex-col items-start p-2 rounded-md w-full">
+        <h1 class="font-bold text-4xl mb-3">Invoices</h1>
+        @if (invoices$ | async; as invoices) {
+            <section class="px-4 mx-auto lg:w-full md:w-full md:px-2 sm:max-w-full sm:px-2">
+                @if (invoices.length === 0) {
+                    <div class="card bg-neutral w-full my-10 shadow-xl py-12">
+                        <div class="text-center">
+                            <h1 class="text-heading text-4xl">No invoices found</h1>
+                        </div>
+                    </div>
+                } @else {
+                <txc-table [dataSource]="invoices"
+                           [displayedColumns]="visibleHeaders"
+                           [customColTemplates]="{
+                            dueDate: dueDateAtTemplate,
+                            createdAt: createdAtTemplate,
+                            updatedAt: updatedAtTemplate
+                           }"
+                ></txc-table>
+                }
+            </section>
+        }
+    </div>
+</div>
+
+<ng-template #dueDateAtTemplate let-invoice>
+    <span>{{ invoice.dueDate | date }}</span>
+</ng-template>
+<ng-template #createdAtTemplate let-invoice>
+    <span>{{ invoice.createdAt | date }}</span>
+</ng-template>
+<ng-template #updatedAtTemplate let-invoice>
+    <span>{{ invoice.updatedAt | date }}</span>
+</ng-template>

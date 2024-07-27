@@ -1,29 +1,112 @@
-<section class="px-20 mx-auto lg:w-3/4 md:w-full md:px-2 sm:max-w-full sm:px-2">
-    @if (jobAds$ | async; as jobAds) {
-        @for (jobAd of jobAds; track jobAd.id) {
+@if (jobAds$ | async; as jobAds) {
+    @if (context === 'unauthorized' || !context) {
+        <section class="px-20 mx-auto lg:w-3/4 md:w-full md:px-2 sm:max-w-full sm:px-2">
+            @for (jobAd of jobAds; track jobAd.id) {
+                <ng-container
+                    *ngTemplateOutlet="publishedDateTemplate; context: { $implicit: jobAd }"></ng-container>
+            }
+        </section>
+    } @else {
+        <section class="px-4 mx-auto lg:w-full md:w-full md:px-2 sm:max-w-full sm:px-2">
+            <txc-search (searchInput)="onSearch($event)"></txc-search>
+            @if (jobAds.length === 0) {
+                <div class="card bg-neutral w-full my-10 shadow-xl py-12">
+                    <div class="text-center">
+                        <h1 class="text-heading text-4xl">No job ads found</h1>
+                    </div>
+                </div>
+            } @else {
+                <txc-table [dataSource]="jobAds"
+                           [displayedColumns]="visibleHeaders"
+                           [highlightSearchTerm]="searchTerm"
+                           [customColTemplates]="{
+                            title: titleTemplate,
+                            createdAt: createdAtTemplate,
+                            updatedAt: updatedAtTemplate,
+                            status: statusTemplate,
+                            skills: skillsTemplate,
+                            action: actionTemplate
+                       }"
+                ></txc-table>
+            }
 
-            <a [routerLink]="['/job', jobAd.id]">
-                <txc-card
-                    [title]="jobAd.title"
-                    [description]="jobAd.description"
-                    [actionText]="'Apply now'"
-                    [actionLink]="['/job', jobAd.id]"
-                    [footerTemplate]="footerTemplate"
-                >
-                    <ng-template #footerTemplate>
-                        <div class="flex-row">
-                            @for (skills of jobAd.skills; track skills) {
-                                <span class="badge badge-neutral mr-2 last:mr-0">{{ skills }}</span>
-                            }
-                        </div>
-                    </ng-template>
-                    <button class="btn btn-primary">Apply now</button>
-                </txc-card>
-            </a>
-        }
+        </section>
     }
     @if (jobAdsIsLoading$ | async) {
         <div class="card bg-neutral w-full my-10 shadow-xl">
         </div>
     }
-</section>
+}
+
+<ng-template #publishedDateTemplate let-jobAd>
+    <a [routerLink]="['/job', jobAd.id]">
+        <txc-card
+            [title]="jobAd.title"
+            [description]="jobAd.description"
+            [actionText]="'Apply now'"
+            [actionLink]="['/job', jobAd.id]"
+            [footerTemplate]="footerTemplate"
+        >
+            <ng-template #footerTemplate>
+                <div class="flex-row">
+                    @for (skills of jobAd.skills; track skills) {
+                        <span class="badge badge-neutral mr-2 last:mr-0">{{ skills }}</span>
+                    }
+                </div>
+            </ng-template>
+            <button class="btn btn-primary">Apply now</button>
+        </txc-card>
+    </a>
+</ng-template>
+<ng-template #actionTemplate let-jobAd>
+    <div class="flex items-center gap-2">
+        <a
+            class="btn btn-primary min-h-4 h-8"
+            [routerLink]="['/dashboard/jobs/edit', jobAd.id]">Edit
+        </a>
+        <button
+            class="btn btn-warning min-h-4 h-8"
+            value="{{ jobAd.id }}"
+            (click)="onDelete(jobAd.id)">Delete
+        </button>
+    </div>
+</ng-template>
+<ng-template #titleTemplate let-jobAd>
+    <a
+        class="font-bold text-blue-800 hover:text-blue-600"
+        [innerHTML]="jobAd.title | highlight:searchTerm"
+        [routerLink]="['/dashboard/jobs', jobAd.id]">{{ jobAd.title }}</a>
+</ng-template>
+<ng-template #createdAtTemplate let-jobAd>
+    <span>{{ jobAd.createdAt | date }}</span>
+</ng-template>
+<ng-template #updatedAtTemplate let-jobAd>
+    <span>{{ jobAd.updatedAt | date }}</span>
+</ng-template>
+<ng-template #skillsTemplate let-jobAd>
+    <span [innerHTML]="jobAd.skills.join(', ') | highlight:searchTerm">{{ jobAd.skills.join(', ') }}</span>
+</ng-template>
+<ng-template #statusTemplate let-jobAd>
+    @switch (jobAd.status) {
+        @case ('published') {
+            <div class="badge badge-lg badge-success gap-2 uppercase font-bold text-cyan-100">
+                {{ jobAd.status }}
+            </div>
+        }
+        @case ('draft') {
+            <div class="badge badge-lg badge-neutral gap-2 uppercase font-bold">
+                {{ jobAd.status }}
+            </div>
+        }
+        @case ('archived') {
+            <div class="badge badge-lg badge-warning gap-2 uppercase font-bold">
+                {{ jobAd.status }}
+            </div>
+        }
+        @default {
+            <div class="badge badge-lg badge-neutral gap-2 uppercase font-bold">
+                {{ jobAd.status }}
+            </div>
+        }
+    }
+</ng-template>

@@ -1,1 +1,65 @@
-<input type="text" />
+<div class="w-full">
+    <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">
+        @if (mode === 'create') {
+            Create new Job Ad
+        } @else {
+            Edit Job Ad
+        }
+    </h1>
+    @if (jobAdDataVm$ | async; as jobAdDataVm) {
+        <div class="w-1/2">
+            @if (jobAdDataVm.validationErrors && !isEmpty(jobAdDataVm.validationErrors)) {
+                {{ jobAdDataVm.validationErrors | json }}
+                <div role="alert" class="alert alert-error mb-2">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        class="h-6 w-6 shrink-0 stroke-current">
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>Job ad data fetch failed</span>
+                </div>
+            }
+
+
+            <form [formGroup]="jobAdForm" (ngSubmit)="onSubmit()">
+                <input formControlName="id" type="hidden" [value]="jobAdDataVm.jobAdData.id">
+                <div class="mb-4">
+                    <label for="title" class="form-label">Title</label>
+                    <input formControlName="title" id="title" type="text" placeholder="Job title"
+                           class="input input-bordered w-full" />
+                </div>
+                <div class="mb-4">
+                    <label for="description"
+                           class="form-label">Description</label>
+                    <textarea formControlName="description" id="description" type="text" placeholder="Job description"
+                              class="textarea textarea-bordered w-full"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="skills"
+                           class="form-label">Skills</label>
+                    <input formControlName="skills" id="skills" type="text" placeholder="Comma separated values"
+                           class="input input-bordered w-full" />
+                </div>
+                <div class="mb-4">
+                    <label for="status"
+                           class="form-label">Status</label>
+                    <div class="flex flex-row justify-between">
+                        <select formControlName="status" id="status" class="select w-1/2 uppercase">
+                            <option disabled selected>Select Job Ad status</option>
+                            @for (status of jobAdStatuses; track status) {
+                                <option [disabled]="disabledStatuses.indexOf(status) >= 0" class="uppercase">{{ status }}</option>
+                            }
+                        </select>
+                        <button class="btn btn-active button-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+</div>

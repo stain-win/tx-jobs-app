@@ -1,44 +1,54 @@
 import {Route} from '@angular/router';
 import {ClientDashboardComponent} from './client-dashboard.component';
 import {UnsavedChangesGuard} from '@tx/core';
+import { APPLICATION_CONTEXT } from '../../models/application';
 
 
 export const dashboardRoutes: Route[] = [
     {
         path: '',
         component: ClientDashboardComponent,
+        data: { mode: APPLICATION_CONTEXT.AUTHORIZED },
         children: [
             {
+                path: '',
+                pathMatch: 'full',
+                loadComponent: async () => (await import('../../components/dashboard/dashboard.component'))
+                    .DashboardComponent,
+            },
+            {
                 path: 'jobs',
-                loadComponent: () => import('../../components/job-ad/job-ad.component')
-                    .then(m => m.JobAdComponent),
+                loadComponent: async () => (await import('../../components/job-ad-list/job-ad-list.component'))
+                    .JobAdListComponent,
             },
             {
                 path: 'jobs/add',
-                canDeactivate: [],
-                loadComponent: () => import('../../components/job-ad-form/job-ad-form.component')
-                    .then(m => m.JobAdFormComponent),
+                canDeactivate: [UnsavedChangesGuard],
+                providers: [UnsavedChangesGuard],
+                loadComponent: async () => (await import('../../components/job-ad-form/job-ad-form.component'))
+                    .JobAdFormComponent,
             },
             {
                 path: 'jobs/edit/:id',
                 canDeactivate: [UnsavedChangesGuard],
-                loadComponent: () => import('../../components/job-ad-form/job-ad-form.component')
-                    .then(m => m.JobAdFormComponent),
+                providers: [UnsavedChangesGuard],
+                loadComponent: async () => (await import('../../components/job-ad-form/job-ad-form.component'))
+                    .JobAdFormComponent,
             },
             {
                 path: 'jobs/:id',
-                loadComponent: () => import('../../components/job-ad-form/job-ad-form.component')
-                    .then(m => m.JobAdFormComponent),
+                loadComponent: async () => (await import('../../components/job-ad/job-ad.component'))
+                    .JobAdComponent,
             },
             {
                 path: 'invoices',
-                loadComponent: () => import('../../components/invoice/invoice.component')
-                    .then(m => m.InvoiceComponent),
+                loadComponent: async () => (await import('../../components/invoice/invoice.component'))
+                    .InvoiceComponent,
             },
             {
                 path: 'invoices/:id',
-                loadComponent: () => import('../../components/invoice/invoice.component')
-                    .then(m => m.InvoiceComponent),
+                loadComponent: async () => (await import('../../components/invoice/invoice.component'))
+                    .InvoiceComponent,
             }
         ],
     },

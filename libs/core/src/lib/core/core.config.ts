@@ -1,5 +1,7 @@
 import {ApplicationConfig, InjectionToken} from '@angular/core';
 import {environment, Environment} from '@tx/core/environment';
+import { TitleStrategy } from '@angular/router';
+import { TitlePrefix } from '@tx/core';
 
 export interface CoreConfig {
     environment: Environment;
@@ -14,5 +16,6 @@ export const coreAppConfig: ApplicationConfig = {
                 environment
             }
         },
+        { provide: TitleStrategy, useClass: TitlePrefix }
     ],
 }

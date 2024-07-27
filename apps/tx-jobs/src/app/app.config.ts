@@ -14,6 +14,7 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { jobAdsFeatureKey, jobAdsReducer } from '../components/job-ad-list/store/jobAds.reducer';
 import { JobAdsEffect } from '../components/job-ad-list/store/jobAds.effect';
+import { apiInterceptor } from '../../../../libs/core/src/lib/core/interceptors/api.interceptor';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -26,7 +27,7 @@ export const appConfig: ApplicationConfig = {
         provideStore({[jobAdsFeatureKey]: jobAdsReducer}),
         provideZoneChangeDetection({ eventCoalescing: true }),
         provideRouter(appRoutes, withComponentInputBinding()),
-        provideHttpClient(withInterceptors([authInterceptor])),
+        provideHttpClient(withInterceptors([apiInterceptor, authInterceptor])),
         provideAnimationsAsync(),
         ...coreAppConfig.providers,
     ],

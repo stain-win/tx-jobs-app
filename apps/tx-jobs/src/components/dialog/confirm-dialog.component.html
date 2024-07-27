@@ -1,0 +1,16 @@
+<mat-dialog-content>
+    Would you like to permanently delete this Job Ad and all it's related data?
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="flex items-center gap-2">
+        <button class="btn btn-primary min-h-4 h-8"
+                (click)="dialogRef.close(false)">
+            Cancel
+        </button>
+        <button class="btn btn-warning min-h-4 h-8"
+                (click)="dialogRef.close(true)"
+                cdkFocusInitial>
+            Ok
+        </button>
+    </div>
+</mat-dialog-actions>

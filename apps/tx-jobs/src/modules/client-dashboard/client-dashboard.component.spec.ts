@@ -1,5 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClientDashboardComponent } from './client-dashboard.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { UnsavedChangesGuard } from '@tx/core';
 
 describe('ClientDashboardComponent', () => {
     let component: ClientDashboardComponent;
@@ -7,7 +10,19 @@ describe('ClientDashboardComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [ClientDashboardComponent],
+            imports: [ClientDashboardComponent, RouterTestingModule],
+            providers: [
+                {
+                    provide: ActivatedRoute,
+                    useValue: {
+                        snapshot: {
+                            paramMap: {
+                                get: jest.fn().mockReturnValue('1')
+                            }
+                        }
+                    }
+                }
+            ]
         }).compileComponents();
 
         fixture = TestBed.createComponent(ClientDashboardComponent);
