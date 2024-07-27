@@ -1,13 +1,15 @@
+import { JobAdDto } from './job';
+
 export interface Invoice {
-    id: number;
-    jobAdId: number;
-    amount: unknown; // up to you
-    dueDate: Date;
+    id: string;
+    jobId: string;
+    amount: string; // up to you
+    dueDate: string;
 }
 
-interface InvoiceDto extends Invoice {
+export interface InvoiceDto extends Invoice {
     // DTO properties that are not part of the model
-    createdAt: Date;
-    updatedAt: Date;
-    _embedded: unknown;
+    createdAt: string;
+    updatedAt: string;
+    job: JobAdDto | {};
 }

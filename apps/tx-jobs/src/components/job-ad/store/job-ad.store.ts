@@ -1,41 +1,48 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-import { JobAd } from '../../../models/job';
+import { JobAdDto } from '../../../models/job';
 import { catchError, filter, map, of, switchMap, tap } from 'rxjs';
 import { JobAdsService } from '../../../services/job-ads.service';
+import moment from 'moment';
 
-export interface JobAdState extends JobAd {
+export interface JobAdState {
+    jobAd: JobAdDto;
     isLoading: boolean;
     error: string | null;
 }
 
 export interface JobAdVm {
-    jobAd: JobAdState;
+    jobAd: JobAdDto;
     error: string | null;
 }
 
 export const initialJobAdState: JobAdState = {
-    id: '',
-    title: '',
-    description: '',
+    jobAd :{
+        id: '',
+        title: '',
+        description: '',
+        skills: [],
+        status: 'draft',
+        invoices: [],
+        createdAt: moment().format(),
+        updatedAt: moment().format(),
+    },
     isLoading: false,
     error: null,
-    skills: [],
-    status: 'draft',
 };
 
 @Injectable()
 export class JobAdStore extends ComponentStore<JobAdState> {
     private readonly jobError$ = this.select((state) => state.error);
-    private readonly jobAd$ =this.select((state) => state);
+    private readonly jobAd$ =this.select((state) => state.jobAd);
     readonly jobLoading$ = this.select((state) => state.isLoading);
 
     readonly jobAdVm$ = this.select({
-        jobAd: this.jobAd$.pipe(filter((jobAd) => jobAd.status === 'published')),
+        jobAd: this.jobAd$,
         error: this.jobError$,
     }, {debounce: true});
 
-    loadJobAd = this.effect<{id: string}>((jobId$) =>
+    loadJobAd = this.effect<{id: string, published: boolean, embedded: boolean}>((jobId$) =>
         jobId$.pipe(
             tap(() => {
                 this.patchState({
@@ -43,12 +50,11 @@ export class JobAdStore extends ComponentStore<JobAdState> {
                     error: null
                 });
             }),
-            map((id) => id.id),
-            switchMap( (id ) => {
-                return this.jobService.getJobAd(id).pipe(
+            switchMap( (data ) => {
+                return this.jobService.getJobAd(data.id, data.published, data.embedded).pipe(
                     tap((jobAd) => {
                         this.patchState({
-                            ...jobAd,
+                            jobAd: {...jobAd},
                             isLoading: false
                         });
                     }),
@@ -57,7 +63,7 @@ export class JobAdStore extends ComponentStore<JobAdState> {
                             error: error.message,
                             isLoading: false
                         });
-                        return of(null);
+                        return of([error]);
                     })
                 );
             }),

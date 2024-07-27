@@ -1,6 +1,6 @@
 import { JobAdsService } from '../../../services/job-ads.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { loadJobAds, loadJobAdsSuccess } from './jobAds.action';
+import { deleteJobAd, loadJobAds, loadJobAdsSuccess, searchJobAds } from './jobAds.action';
 import { catchError, EMPTY, map, switchMap } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 
@@ -13,8 +13,33 @@ export class JobAdsEffect {
         () =>
             this.actions$.pipe(
                 ofType(loadJobAds),
-                switchMap(() =>
-                    this.jobAdsService$.getJobAdsPublished().pipe(
+                switchMap((action) =>
+                    this.jobAdsService$.getJobAds(action.published).pipe(
+                        map((jobAds) => loadJobAdsSuccess({ jobAds })),
+                        catchError(() => EMPTY),
+                ),
+            )
+        )
+    );
+    deleteJobAd$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(deleteJobAd),
+                switchMap((action) =>
+                    this.jobAdsService$.deleteJobAd(action.id).pipe(
+                        map(() => loadJobAds({ published: false })),
+                        catchError(() => EMPTY),
+                ),
+            )
+        )
+    );
+
+    searchJobAds$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(searchJobAds),
+                switchMap((action) =>
+                    this.jobAdsService$.searchJobAds(action.query).pipe(
                         map((jobAds) => loadJobAdsSuccess({ jobAds })),
                         catchError(() => EMPTY),
                 ),

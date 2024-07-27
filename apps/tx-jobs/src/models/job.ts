@@ -1,3 +1,5 @@
+import { Invoice } from './invoice';
+
 export interface JobAd {
     id: string;
     /**
@@ -21,12 +23,16 @@ export interface JobAd {
      */
     status: JobAdStatus;
 }
-
-export type JobAdStatus = 'draft' | 'published' | 'archived';
+export const JobAdStatus = {
+    DRAFT: 'draft',
+    PUBLISHED: 'published',
+    ARCHIVED: 'archived'
+}
+export type JobAdStatus = typeof JobAdStatus[keyof typeof JobAdStatus];
 
 export interface JobAdDto extends JobAd {
     // DTO properties that are not part of the model
-    createdAt: Date;
-    updatedAt: Date;
-    _embedded: unknown;
+    createdAt: string;
+    updatedAt: string;
+    invoices: Invoice[];
 }

@@ -1,0 +1,37 @@
+<div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+    <table
+        mat-table
+        [dataSource]="dataSource"
+        class="min-w-full leading-normal"
+    >
+        @for (column of displayedColumns; track column) {
+            <ng-container matColumnDef="{{ column }}">
+                <th
+                    *matHeaderCellDef
+                    class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-normal"
+                >
+                    {{ column }}
+                </th>
+                <td *matCellDef="let element"
+                    class="px-5 py-5 border-b border-gray-100 text-sm max-w-md text-pretty break-words"
+
+                >
+                    @if (customColTemplates.has(column) && customColTemplates.get(column)) {
+                        <ng-container [ngTemplateOutlet]="customColTemplates.get(column) || null"
+                                      [ngTemplateOutletContext]="{ $implicit:element}"
+
+                        >
+                        </ng-container>
+                    } @else {
+                        <div [innerHTML]="element[column] | highlight:highlightSearchTerm">
+                        {{ element[column] }}
+                        </div>
+                    }
+                </td>
+
+            </ng-container>
+        }
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" class="h-20"></tr>
+    </table>
+</div>

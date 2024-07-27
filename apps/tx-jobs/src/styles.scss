@@ -14,4 +14,12 @@ home {
         background: url('../public/abstract-bg.svg') no-repeat center right;
         @apply bg-80;
     }
+    .font-highlight {
+        @apply bg-yellow-200;
+    }
+}
+tx-job-ad-form {
+    .form-label {
+        @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2;
+    }
 }

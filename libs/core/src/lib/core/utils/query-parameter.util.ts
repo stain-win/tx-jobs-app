@@ -105,7 +105,7 @@ export class QueryParameterUtil {
      */
     static encodeValue (value: QueryParameterUtil.QueryParameter): string {
 
-        if (value === null) {
+        if (value === null || value === undefined) {
 
             value = '';
         }
@@ -125,7 +125,7 @@ export class QueryParameterUtil {
 // tslint:disable-next-line:no-namespace
 export namespace QueryParameterUtil {
 
-    export type Primitive = boolean | string | number | null;
+    export type Primitive = boolean | string | number | null | undefined;
 
     export type QueryParameter = Primitive | Date | Array<Primitive | Date>;
 

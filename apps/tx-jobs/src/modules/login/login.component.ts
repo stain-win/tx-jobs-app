@@ -5,11 +5,10 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { BehaviorSubject, catchError, take, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { B } from '@angular/cdk/keycodes';
 
-export enum LoginMode {
-    LOGIN = 'login',
-    REGISTER = 'register',
+export const LoginMode = {
+    LOGIN: 'login',
+    REGISTER: 'register',
 }
 
 @Component({
@@ -58,9 +57,6 @@ export class LoginComponent implements OnInit {
             password: this.loginForm.value.password
         }).pipe(
             take(1),
-            tap((d) => {
-                console.log(d);
-            }),
             catchError((error: HttpErrorResponse) => {
                 this.loginError$.next('Login failed');
                 return [];

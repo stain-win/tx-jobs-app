@@ -5,3 +5,6 @@ export * from './lib/core/interceptors';
 export * from './lib/core/models';
 export * from './lib/core/services';
 export * from './lib/core/utils';
+export * from './lib/core/pipes/highlight.pipe';
+export * from './lib/core/operators/title.prefix';
+export * from './lib/core/resolvers';
